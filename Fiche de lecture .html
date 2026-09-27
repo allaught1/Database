@@ -1,0 +1,94 @@
+(() => {
+  const html = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Fiche de référence — Article</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    color: #222;
+    line-height: 1.6;
+  }
+  h1 {
+    text-align: center;
+    font-size: 26px;
+    border-bottom: 2px solid #333;
+    padding-bottom: 15px;
+  }
+  h2 {
+    font-size: 17px;
+    margin-top: 30px;
+    border-bottom: 1px solid #aaa;
+    padding-bottom: 6px;
+  }
+  .field {
+    margin: 18px 0;
+    border-bottom: 1px solid #bbb;
+    min-height: 35px;
+  }
+  .label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+  @media print {
+    body { margin: 0; padding: 15px; }
+  }
+</style>
+</head>
+<body>
+
+<h1>FICHE DE RÉFÉRENCE — ARTICLE</h1>
+
+<h2>01 — Identification de la source</h2>
+
+<div class="field"><span class="label">Titre de l’article</span></div>
+<div class="field"><span class="label">Auteur / Autrice</span></div>
+<div class="field"><span class="label">Média / Revue / Institution</span></div>
+<div class="field"><span class="label">Date de publication</span></div>
+<div class="field"><span class="label">Zone géographique</span></div>
+<div class="field"><span class="label">Type de document</span></div>
+<div class="field"><span class="label">URL / Référence bibliographique</span></div>
+
+<h2>02 — Analyse du contenu</h2>
+
+<div class="field"><span class="label">Sujet central / Problématique</span></div>
+<div class="field"><span class="label">Résumé — faits et arguments essentiels</span></div>
+<div class="field"><span class="label">Mécanisme économique mis en évidence</span></div>
+<div class="field"><span class="label">Acteurs clés et rapports de pouvoir</span></div>
+<div class="field"><span class="label">Angles politiques / Influences</span></div>
+<div class="field"><span class="label">Conséquences / Effets observés</span></div>
+
+<h2>03 — Réflexion personnelle</h2>
+
+<div class="field"><span class="label">Ce que je retiens</span></div>
+<div class="field"><span class="label">Questions soulevées / Points à approfondir</span></div>
+<div class="field"><span class="label">Liens avec d’autres lectures</span></div>
+<div class="field"><span class="label">Limites / Informations manquantes</span></div>
+
+<h2>04 — Indexation et suivi</h2>
+
+<div class="field"><span class="label">Mots-clés</span></div>
+<div class="field"><span class="label">Tags / Catégories</span></div>
+<div class="field"><span class="label">État de lecture</span></div>
+<div class="field"><span class="label">Identifiant de référence</span></div>
+
+</body>
+</html>`;
+
+  const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+
+  a.href = url;
+  a.download = "Fiche_de_reference_article.html";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  URL.revokeObjectURL(url);
+})();
