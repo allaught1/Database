@@ -1,0 +1,341 @@
+
+(() => {
+  const html = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fiche de lecture interactive</title>
+
+<style>
+:root {
+  --ink: #263238;
+  --accent: #496b70;
+  --paper: #ffffff;
+  --line: #d7dfe0;
+  --soft: #f2f6f5;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: Arial, sans-serif;
+  background: #edf1f0;
+  color: var(--ink);
+  margin: 0;
+  padding: 24px;
+  line-height: 1.5;
+}
+
+main {
+  max-width: 850px;
+  margin: auto;
+  background: var(--paper);
+  padding: 36px;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px #00000012;
+}
+
+h1 {
+  text-align: center;
+  color: var(--accent);
+  font-size: 27px;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #687779;
+  margin-bottom: 30px;
+}
+
+h2 {
+  font-size: 18px;
+  color: var(--accent);
+  border-bottom: 2px solid var(--line);
+  padding-bottom: 8px;
+  margin-top: 32px;
+}
+
+.field { margin: 18px 0; }
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 7px;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #cbd5d6;
+  border-radius: 6px;
+  font: inherit;
+  background: white;
+  color: var(--ink);
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: 2px solid #91b5b5;
+  border-color: var(--accent);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 32px;
+}
+
+button {
+  border: 0;
+  border-radius: 7px;
+  padding: 12px 18px;
+  background: var(--accent);
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+button.secondary { background: #647477; }
+button:hover { opacity: .88; }
+
+.status {
+  margin-top: 12px;
+  color: var(--accent);
+  font-size: 14px;
+}
+
+@media (max-width: 600px) {
+  body { padding: 10px; }
+  main { padding: 20px; }
+  .grid { grid-template-columns: 1fr; }
+}
+
+@media print {
+  body { background: white; padding: 0; }
+  main { box-shadow: none; padding: 10px; }
+  .actions, .status { display: none; }
+  input, textarea, select {
+    border: none;
+    border-bottom: 1px solid #aaa;
+    border-radius: 0;
+    padding-left: 0;
+  }
+  textarea { min-height: 65px; }
+}
+</style>
+</head>
+
+<body>
+<main>
+<h1>FICHE DE LECTURE</h1>
+<div class="subtitle">Analyse documentaire — Article</div>
+
+<form id="readingForm">
+
+<h2>01 — Identification de la source</h2>
+
+<div class="field">
+<label for="titre">Titre de l’article</label>
+<input id="titre" name="Titre" placeholder="Titre complet de l’article">
+</div>
+
+<div class="grid">
+<div class="field">
+<label for="auteur">Auteur / Autrice</label>
+<input id="auteur" name="Auteur" placeholder="Nom">
+</div>
+<div class="field">
+<label for="date">Date de publication</label>
+<input id="date" name="Date" type="date">
+</div>
+</div>
+
+<div class="field">
+<label for="source">Média / Revue / Institution</label>
+<input id="source" name="Publication" placeholder="Nom de la publication">
+</div>
+
+<div class="grid">
+<div class="field">
+<label for="zone">Zone géographique</label>
+<input id="zone" name="Zone" placeholder="Pays / région">
+</div>
+<div class="field">
+<label for="type">Type de document</label>
+<select id="type" name="Type">
+<option value="">Sélectionner</option>
+<option>Article journalistique</option>
+<option>Analyse économique</option>
+<option>Recherche universitaire</option>
+<option>Rapport institutionnel</option>
+<option>Opinion / éditorial</option>
+<option>Autre</option>
+</select>
+</div>
+</div>
+
+<div class="field">
+<label for="url">URL / Référence bibliographique</label>
+<input id="url" name="Référence" type="url" placeholder="https://">
+</div>
+
+<h2>02 — Analyse du contenu</h2>
+
+<div class="field">
+<label for="central">Sujet central / Problématique</label>
+<textarea id="central" name="Sujet central" placeholder="Quelle question principale l’article cherche-t-il à éclairer ?"></textarea>
+</div>
+
+<div class="field">
+<label for="resume">Résumé — faits et arguments essentiels</label>
+<textarea id="resume" name="Résumé" placeholder="Synthèse personnelle des informations et arguments."></textarea>
+</div>
+
+<div class="field">
+<label for="mecanisme">Mécanisme économique mis en évidence</label>
+<textarea id="mecanisme" name="Mécanisme économique" placeholder="Ex. : monopole, dépendance aux ressources, privatisation, extraction, répartition des profits..."></textarea>
+</div>
+
+<div class="field">
+<label for="acteurs">Acteurs clés et rapports de pouvoir</label>
+<textarea id="acteurs" name="Acteurs clés" placeholder="Entreprises, États, populations locales, institutions, investisseurs..."></textarea>
+</div>
+
+<div class="field">
+<label for="politique">Angles politiques / Influences</label>
+<textarea id="politique" name="Angles politiques" placeholder="Politiques publiques, réglementation, souveraineté, intérêts en présence..."></textarea>
+</div>
+
+<div class="field">
+<label for="effets">Conséquences / Effets observés</label>
+<textarea id="effets" name="Conséquences" placeholder="Effets économiques, sociaux, environnementaux ou territoriaux..."></textarea>
+</div>
+
+<h2>03 — Réflexion personnelle</h2>
+
+<div class="field">
+<label for="retenir">Ce que je retiens</label>
+<textarea id="retenir" name="À retenir" placeholder="L’idée ou le constat que je souhaite conserver."></textarea>
+</div>
+
+<div class="field">
+<label for="questions">Questions soulevées / Points à approfondir</label>
+<textarea id="questions" name="Questions" placeholder="Qu’est-ce qui reste à vérifier ou à comprendre ?"></textarea>
+</div>
+
+<div class="field">
+<label for="liens">Liens avec d’autres lectures</label>
+<textarea id="liens" name="Liens" placeholder="Articles, concepts, événements ou thèmes connexes..."></textarea>
+</div>
+
+<div class="field">
+<label for="limites">Limites / Informations manquantes</label>
+<textarea id="limites" name="Limites" placeholder="Données absentes, perspective non abordée, affirmation à vérifier..."></textarea>
+</div>
+
+<h2>04 — Indexation et suivi</h2>
+
+<div class="field">
+<label for="mots">Mots-clés</label>
+<textarea id="mots" name="Mots-clés" placeholder="Séparer les mots-clés par des virgules."></textarea>
+</div>
+
+<div class="field">
+<label for="tags">Tags / Catégories</label>
+<input id="tags" name="Tags" placeholder="#économie #ressources #souveraineté">
+</div>
+
+<div class="grid">
+<div class="field">
+<label for="statut">État de lecture</label>
+<select id="statut" name="État de lecture">
+<option>À lire</option>
+<option>En cours</option>
+<option>Lu et synthétisé</option>
+<option>À relire</option>
+<option>À approfondir</option>
+</select>
+</div>
+<div class="field">
+<label for="identifiant">Identifiant de référence</label>
+<input id="identifiant" name="Identifiant" placeholder="Ex. ECO-2026-001">
+</div>
+</div>
+
+<div class="actions">
+<button type="button" onclick="copyForm()">Copier la fiche remplie</button>
+<button type="button" class="secondary" onclick="window.print()">Imprimer / PDF</button>
+<button type="reset" class="secondary">Effacer les champs</button>
+</div>
+
+<div id="status" class="status" aria-live="polite"></div>
+
+</form>
+</main>
+
+<script>
+function getFormText() {
+  const form = document.getElementById("readingForm");
+  const data = new FormData(form);
+  let output = "FICHE DE LECTURE — ARTICLE\\n\\n";
+
+  for (const [key, value] of data.entries()) {
+    output += key + ": " + (value || "—") + "\\n\\n";
+  }
+
+  return output;
+}
+
+async function copyForm() {
+  const text = getFormText();
+  const status = document.getElementById("status");
+
+  try {
+    await navigator.clipboard.writeText(text);
+    status.textContent = "Fiche copiée. Vous pouvez la coller dans vos notes.";
+  } catch (error) {
+    const area = document.createElement("textarea");
+    area.value = text;
+    document.body.appendChild(area);
+    area.select();
+    document.execCommand("copy");
+    area.remove();
+    status.textContent = "Fiche copiée.";
+  }
+}
+
+document.getElementById("readingForm").addEventListener("reset", () => {
+  document.getElementById("status").textContent = "Les champs ont été réinitialisés.";
+});
+</script>
+</body>
+</html>`;
+
+  const blob = new Blob([html], {
+    type: "text/html;charset=utf-8"
+  });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = "Fiche_de_lecture_interactive.html";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+})();
